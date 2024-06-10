@@ -1,0 +1,113 @@
+@import "../../style/vars.scss";
+@import "../../style/App.scss";
+
+.departments__items {
+  display: grid;
+  max-width: 100vw;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr;
+}
+
+.mainscreen__item {
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+}
+
+.departments__items {
+  a {
+    text-decoration: none;
+    display: block;
+    border-radius: 50%;
+  }
+  .mainscreen__company {
+    display: flex;
+  }
+  .mainscreen__department {
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: $whiteColor;
+    font-family: $fontFamily;
+    font-size: 0.75rem;
+    font-weight: 500;
+    line-height: 24px;
+    word-wrap: break-word;
+    padding: 25px;
+  }
+}
+
+@media screen and (min-width: 1366px) and (max-width: 1920px) {
+  .mainscreen-main__items {
+    .mainscreen__department {
+      font-size: 1.1rem;
+    }
+  }
+}
+@media screen and (min-width: 1366px) and (max-width: 1560px) {
+  .mainscreen-main__items {
+    .mainscreen__department {
+      font-size: 0.75rem;
+    }
+  }
+}
+@media screen and (min-width: 1024px) and (max-width: 1366px) {
+  .mainscreen-main__items {
+    .mainscreen__department {
+      font-size: 0.75rem;
+    }
+  }
+  .mainscreen-main__items {
+    display: grid;
+    gap: 3vh;
+    grid-template-columns: 1fr 1fr;
+    grid-auto-rows: 16vw;
+  }
+  .departments__items {
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+  }
+}
+@media screen and (min-width: 768px) and (max-width: 1023px) {
+  .departments__items {
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    .mainscreen__department {
+      padding: 30px;
+    }
+  }
+  .mainscreen-main__items {
+    .mainscreen__department {
+      font-size: 0.55rem;
+      line-height: 14px;
+    }
+  }
+  .mainscreen-main__items {
+    display: grid;
+    gap: 3vh;
+    grid-template-columns: 1fr 1fr;
+    grid-auto-rows: 13vw;
+    padding: 35px;
+  }
+}
+.departments__items {
+  .mainscreen__company:hover {
+    text-decoration: underline;
+    text-decoration-color: $whiteColor;
+  }
+}
+@media screen and (min-width: 500px) and (max-width: 767px) {
+  .departments__items {
+    grid-template-columns: 1fr 1fr 1fr;
+    .mainscreen__department {
+      padding: 20px;
+    }
+  }
+}
+@media screen and (max-width: 500px) {
+  .departments__items {
+    grid-template-columns: 1fr 1fr;
+    .mainscreen__department {
+      padding: 40px;
+    }
+  }
+}

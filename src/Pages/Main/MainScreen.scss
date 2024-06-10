@@ -1,0 +1,204 @@
+@import "../../style/vars.scss";
+@import "../../style/App.scss";
+
+.mainscreen__main {
+  height: auto;
+  padding: 8vh 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0vh;
+  max-width: 98%;
+  box-sizing: border-box;
+}
+.display {
+  display: none;
+  height: 0;
+  width: 0;
+}
+.position-left-end {
+  justify-items: center;
+  align-self: flex-end;
+  text-align: center;
+}
+
+.position-left-start {
+  justify-items: center;
+  align-self: flex-start;
+  text-align: center;
+}
+
+.position-right-end {
+  justify-items: flex-end;
+  align-self: flex-end;
+  text-align: center;
+}
+
+.position-right-start {
+  justify-items: flex-start;
+  align-self: flex-start;
+  text-align: center;
+}
+
+.position-center {
+  justify-self: flex-start;
+  text-align: center;
+}
+
+.violet300 {
+  background-color: rgb(179, 159, 234);
+}
+.violet400 {
+  background-color: rgb(153, 127, 227);
+}
+.violet500 {
+  background-color: rgb(128, 95, 220);
+}
+
+.pink100 {
+  background-color: rgb(251, 218, 254);
+}
+.pink200 {
+  background-color: rgb(235, 194, 239);
+}
+.pink400 {
+  background-color: rgb(222, 153, 228);
+}
+.pink500 {
+  background-color: rgb(203, 110, 211);
+}
+@media (width> 1920px) {
+  .sizeNone {
+    height: 0px;
+    width: 0px;
+    display: none;
+  }
+  .sizeXXS {
+    height: 5vw;
+    width: 5vw;
+  }
+  .sizeXS {
+    height: 6vw;
+    width: 6vw;
+  }
+  .sizeS {
+    height: 7vw;
+    width: 7vw;
+  }
+  .sizeM {
+    height: 8vw;
+    width: 8vw;
+  }
+  .sizeL {
+    height: 9vw;
+    width: 9vw;
+  }
+  .sizeXL {
+    height: 10vw;
+    width: 10vw;
+  }
+}
+@media screen and (min-width: 1560px) and (max-width: 1920px) {
+  .sizeXXS {
+    height: 4vw;
+    width: 4vw;
+  }
+  .sizeXS {
+    height: 5.6vw;
+    width: 5.6vw;
+  }
+  .sizeS {
+    height: 6vw;
+    width: 6vw;
+  }
+  .sizeM {
+    height: 5vw;
+    width: 5vw;
+  }
+  .sizeL {
+    height: 6.5vw;
+    width: 6.5vw;
+  }
+  .sizeXL {
+    height: 6.7vw;
+    width: 6.7vw;
+  }
+}
+@media screen and (min-width: 1366px) and (max-width: 1560px) {
+  .sizeXXS {
+    height: 4vw;
+    width: 4vw;
+  }
+  .sizeXS {
+    height: 5.6vw;
+    width: 5.6vw;
+  }
+  .sizeS {
+    height: 6vw;
+    width: 6vw;
+  }
+  .sizeM {
+    height: 6.5vw;
+    width: 6.5vw;
+  }
+  .sizeL {
+    height: 8vw;
+    width: 8vw;
+  }
+  .sizeXL {
+    height: 7.5vw;
+    width: 7.5vw;
+  }
+}
+@media screen and (min-width: 1024px) and (max-width: 1366px) {
+  .sizeXXS {
+    height: 4vw;
+    width: 4vw;
+  }
+  .sizeXS {
+    height: 5.6vw;
+    width: 5.6vw;
+  }
+  .sizeS {
+    height: 6vw;
+    width: 6vw;
+  }
+  .sizeM {
+    height: 6.5vw;
+    width: 6.5vw;
+  }
+  .sizeL {
+    height: 8vw;
+    width: 8vw;
+  }
+  .sizeXL {
+    height: 10vw;
+    width: 10vw;
+  }
+}
+@media screen and (min-width: 768px) and (max-width: 1023px) {
+  .sizeXXS {
+    height: 4vw;
+    width: 4vw;
+  }
+  .sizeXS {
+    height: 5.6vw;
+    width: 5.6vw;
+  }
+  .sizeS {
+    height: 5.7vw;
+    width: 5.7vw;
+  }
+  .sizeM {
+    height: 6.5vw;
+    width: 6.5vw;
+  }
+  .sizeL {
+    height: 7vw;
+    width: 7vw;
+  }
+  .sizeXL {
+    height: 9vw;
+    width: 9vw;
+  }
+}

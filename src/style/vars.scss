@@ -1,0 +1,33 @@
+@import "../style/App.scss";
+
+$violetColor: rgb(147, 114, 171);
+$violetColorCompanies: rgb(128, 95, 220);
+$violetColorCompaniesBg: rgba(110, 95, 202, 0.5);
+$lilacColor: rgb(222, 153, 228);
+$lilacColorDirections: rgb(203, 110, 211);
+$lilacColorDirectionsBg: rgba(222, 153, 228, 0.6);
+$yellowColor: rgb(255, 253, 164);
+$peachColor: rgb(255, 223, 201);
+$peachColorSkills: rgb(254, 178, 124);
+$peachColorSkillsBg: rgba(255, 202, 164, 0.6);
+$blackColor: #000000;
+$greyColorLight: rgb(80, 80, 80);
+$greyColorDark: rgb(56, 56, 56);
+$whiteColor: rgb(255, 255, 255);
+
+$violetColor: #9372ab;
+$lilacColor: #de99e4;
+$yellowColor: #fffda4;
+$peachColor: #ffdfc9;
+$blackColor: #000000;
+$whiteColor: #ffffff;
+$peachColor: #ffcaa4;
+
+$fontFamily: Montserrat;
+
+@mixin textCenterRow {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}

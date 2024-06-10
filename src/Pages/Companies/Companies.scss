@@ -1,0 +1,41 @@
+@import "../../style/vars.scss";
+
+.companiesAndDirections__main {
+  color: #ffffff;
+  font-family: Montserrat;
+  font-size: 1.1rem;
+  font-weight: 500;
+  line-height: 24px;
+  word-wrap: break-word;
+  margin: 30px 0px 15px 0px;
+  position: relative;
+  width: 12vw;
+  height: 12vw;
+  border-radius: 50%;
+  background-color: $violetColor;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+@media screen and (min-width: 768px) and (max-width: 950px) {
+  .companiesAndDirections__main {
+    width: 18vw;
+    height: 18vw;
+    font-size: 0.75rem;
+  }
+}
+@media screen and (min-width: 951px) and (max-width: 1240px) {
+  .companiesAndDirections__main {
+    width: 16vw;
+    height: 16vw;
+  }
+}
+@media screen and (min-width: 1241px) and (max-width: 1440px) {
+  .companiesAndDirections__main {
+    width: 14vw;
+    height: 14vw;
+    font-size: 0.95rem;
+  }
+}

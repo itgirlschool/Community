@@ -1,0 +1,260 @@
+@import '../../style/vars.scss';
+
+.user-container {
+  position: relative;
+  display : inline-block;
+  cursor  : pointer;
+
+  .user-photo-container {
+    position     : relative;
+    width        : 100%;
+    height       : 100%;
+    border-radius: 50%;
+
+    .user-photo {
+      width        : 100%;
+      object-fit   : cover;
+      transition   : transform 0.3s ease;
+      border-radius: 50%;
+
+      &:hover {
+        transform   : scale(1.1);
+        border-color: $peachColor;
+      }
+    }
+  }
+
+  .user-info {
+    z-index         : 2;
+    position        : absolute;
+    width           : 100%;
+    height          : 100%;
+    overflow        : hidden;
+    display         : flex;
+    box-shadow      : 0px 0px 6px 0px rgba(0, 0, 0, 0.25);
+    background-color: rgb(255, 255, 255);
+
+    transform: translateX(-50%);
+
+    .user-info-bgpic {
+      z-index : -2;
+      position: relative;
+      top     : 65px;
+      left    : -20px;
+
+      img {
+        width     : 115%;
+        height    : auto;
+        object-fit: cover;
+      }
+    }
+
+    &__text {
+      position      : absolute;
+      display       : flex;
+      flex-direction: column;
+      align-items   : start;
+
+      p {
+        margin: 0;
+      }
+
+      .text-name {
+        color: $violetColor;
+      }
+
+      .text-directions {
+        color: $greyColorLight;
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 1920px) {
+  .user-container {
+
+    .user-photo {
+      border: 2px solid transparent;
+
+      &:hover {
+        padding: 3px;
+      }
+    }
+
+    .user-info {
+      width : 380px;
+      height: 122px;
+      top   : -24px;
+      left  : 178px;
+
+      padding      : 5px;
+      border-radius: 20px;
+
+      .user-info-bgpic {
+        top : 65px;
+        left: -20px;
+
+        img {
+          width: 115%;
+        }
+      }
+
+      &__text {
+        top : 25px;
+        left: 125px;
+
+        .text-name {
+          font-size  : 20px;
+          font-weight: 500;
+        }
+
+        .text-hobbies {
+          padding-top: 7px;
+          font-size  : 16px;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (min-width:1366px) and (max-width:1920px) {
+
+  .user-container {
+
+    .user-photo {
+      border: 2px solid transparent;
+
+      &:hover {
+        padding: 3px;
+      }
+    }
+
+    .user-info {
+      width : 350px;
+      height: 122px;
+      top   : -24px;
+      left  : 165px;
+
+      padding      : 5px;
+      border-radius: 20px;
+
+      .user-info-bgpic {
+        top : 69px;
+        left: -15px;
+
+        img {
+          width: 115%;
+        }
+      }
+
+      &__text {
+        top : 25px;
+        left: 120px;
+
+        .text-name {
+          font-size  : 18px;
+          font-weight: 500;
+        }
+
+        .text-hobbies {
+          padding-top: 5px;
+          font-size  : 14px;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (min-width:1024px) and (max-width:1366px) {
+
+  .user-container {
+    .user-photo {
+      border: 1.5px solid transparent;
+
+      &:hover {
+        padding: 2px;
+      }
+    }
+
+    .user-info {
+      width : 300px;
+      height: 107px;
+      top   : -22px;
+      left  : 138px;
+
+      padding      : 3px;
+      border-radius: 15px;
+
+      .user-info-bgpic {
+        top : 57px;
+        left: -15px;
+
+        img {
+          width: 117%;
+        }
+      }
+
+      &__text {
+        top : 22px;
+        left: 100px;
+
+        .text-name {
+          font-size  : 16px;
+          font-weight: 500;
+        }
+
+        .text-hobbies {
+          padding-top: 5px;
+          font-size  : 14px;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (min-width:768px) and (max-width:1024px) {
+
+  .user-container {
+    .user-photo {
+      border: 1px solid transparent;
+
+      &:hover {
+        padding: 1px;
+      }
+    }
+
+    .user-info {
+      width : 230px;
+      height: 80px;
+      top   : -15px;
+      left  : 105px;
+
+      padding      : 2px;
+      border-radius: 10px;
+
+      .user-info-bgpic {
+        top : 44px;
+        left: -5px;
+
+        img {
+          width: 107%;
+        }
+      }
+
+      &__text {
+        top : 17px;
+        left: 80px;
+
+        .text-name {
+          font-size  : 14px;
+          font-weight: 500;
+        }
+
+        .text-hobbies {
+          padding-top: 4px;
+          font-size  : 12px;
+        }
+      }
+    }
+  }
+}

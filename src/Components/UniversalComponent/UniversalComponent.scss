@@ -1,0 +1,14 @@
+@import "../../style/vars.scss";
+@import "../../style/App.scss";
+
+.title-name {
+  display: flex;
+  padding: 1.5vh 1.5vh;
+  margin: 2%;
+  justify-content: center;
+  align-items: center;
+  height: 5em;
+  width: 5em;
+  border: 1px solid $violetColor;
+  border-radius: 50px;
+}

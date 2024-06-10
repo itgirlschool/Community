@@ -1,0 +1,72 @@
+@import "../../style/vars.scss";
+@import "../../style/App.scss";
+
+.company__main {
+  height: auto;
+  display: grid;
+  align-items: flex-start;
+  gap: 0vh;
+  max-width: 100%;
+  box-sizing: border-box;
+  margin: auto;
+}
+.sp__container-result p {
+  display: flex;
+}
+
+.display {
+  display: none;
+  height: 0;
+  width: 0;
+}
+.position-left-end {
+  justify-items: center;
+  align-self: flex-end;
+  text-align: center;
+}
+
+.position-left-start {
+  justify-items: center;
+  align-self: flex-start;
+  text-align: center;
+}
+
+.position-right-end {
+  justify-items: flex-end;
+  align-self: flex-end;
+  text-align: center;
+}
+
+.position-right-start {
+  justify-items: flex-start;
+  align-self: flex-start;
+  text-align: center;
+}
+
+.position-center {
+  justify-self: flex-start;
+  text-align: center;
+}
+
+.violet300 {
+  background-color: rgb(179, 159, 234);
+}
+.violet400 {
+  background-color: rgb(153, 127, 227);
+}
+.violet500 {
+  background-color: rgb(128, 95, 220);
+}
+
+.pink100 {
+  background-color: rgb(251, 218, 254);
+}
+.pink200 {
+  background-color: rgb(235, 194, 239);
+}
+.pink400 {
+  background-color: rgb(222, 153, 228);
+}
+.pink500 {
+  background-color: rgb(203, 110, 211);
+}

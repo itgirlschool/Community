@@ -1,0 +1,76 @@
+@import "../../style/vars.scss";
+@import "../../style/App.scss";
+
+header {
+  display: flex;
+  flex-direction: column;
+  gap: 4vh;
+  a {
+    text-decoration: none;
+  }
+}
+
+.header__logo {
+  cursor: pointer;
+}
+
+.header-logo__text {
+  color: $violetColor;
+  font-family: $fontFamily;
+  font-size: 2rem;
+  font-weight: 500;
+  line-height: 39px;
+  position: relative;
+}
+
+.header-logo__image {
+  position: absolute;
+  top: 2vh;
+  left: 2vh;
+  z-index: 100;
+  display: flex;
+  gap: 1px;
+}
+.header-logo__plane {
+  transform: rotate(45deg);
+}
+
+.header__nav {
+  display: flex;
+  flex-direction: row;
+  gap: 3vw;
+}
+.header-nav__item {
+  position: relative;
+  cursor: pointer;
+}
+.header-nav__item:hover {
+  .header-nav__background {
+    background: $violetColor;
+    width: 100%;
+    padding: 5px;
+    top: -5px;
+    left: -5px;
+  }
+  .header-nav__text {
+    color: $whiteColor;
+  }
+}
+
+.header-nav__text {
+  color: $blackColor;
+  font-family: $fontFamily;
+  font-size: 1.25rem;
+  font-weight: 500;
+  line-height: 24px;
+}
+.header-nav__background {
+  border-radius: 10px;
+  position: absolute;
+  top: 0;
+  left: 5%;
+  width: 90%;
+  height: 1.5rem;
+  z-index: -100;
+  background: $peachColor;
+}

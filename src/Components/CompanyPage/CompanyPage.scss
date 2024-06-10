@@ -1,0 +1,55 @@
+@import "../../style/vars.scss";
+@import "../../style/App.scss";
+
+.companiesAndDirections__container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+.companiesAndDirections__users {
+  height: 50vh;
+  width: 90vw;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.companiesAndDirections__users {
+  .sp__container-result-users-user-wrapper {
+    position: absolute;
+    display: flex;
+    border-radius: 80px;
+  }
+
+  @media screen and (min-width: 1920px) {
+    .sp__container-result-users-user-wrapper {
+      width: 90px;
+      height: 90px;
+    }
+  }
+
+  @media screen and (min-width: 1366px) and (max-width: 1920px) {
+    .sp__container-result-users-user-wrapper {
+      width: 77.86px;
+      height: 77.86px;
+    }
+  }
+
+  @media screen and (min-width: 1024px) and (max-width: 1366px) {
+    .sp__container-result-users-user-wrapper {
+      width: 65px;
+      height: 65px;
+    }
+  }
+
+  @media screen and (min-width: 768px) and (max-width: 1024px) {
+    .sp__container-result-users-user-wrapper {
+      width: 50px;
+      height: 50px;
+    }
+  }
+}
