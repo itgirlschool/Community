@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import userData from '../../../data.json';
+import useFirebaseData from '../../firebase/useFirebaseData.js';
 import './UserComponent.scss';
 import UserModal from '../UserModal/UserModal';
 import lineHover from '../../assets/images/vectors/lineHover.svg';
 
 export default function UserComponent({ user, onUserHoverEnter, onUserHoverLeave, isActive }) {
+  const data = useFirebaseData();
   const { firstName, lastName, photo, hobbies } = user;
   const [isHovered, setIsHovered] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -30,7 +31,7 @@ export default function UserComponent({ user, onUserHoverEnter, onUserHoverLeave
 
   const getHobbyNames = (hobbies) => {
     const hobbyNames = hobbies.map((hobbyId) => {
-      const foundHobby = userData.hobbies.find((h) => h.id === hobbyId);
+      const foundHobby = data.hobbies.find((h) => h.id === hobbyId);
       return foundHobby ? foundHobby.name : '';
     });
     return hobbyNames.join(', ');
@@ -66,7 +67,7 @@ export default function UserComponent({ user, onUserHoverEnter, onUserHoverLeave
       {isModalOpen && (
         <UserModal
           user={user}
-          userData={userData}
+          userData={data}
           onClose={() => setIsModalOpen(false)}
           getHobbyNames={getHobbyNames}
           hobbies={hobbies}

@@ -1,10 +1,11 @@
 import { useState, useEffect, useMemo } from 'react';
-import userData from '../../../data.json';
+import useFirebaseData from '../../firebase/useFirebaseData.js';
 import './SearchingPage.scss';
 import UserComponent from '../../Components/UserComponent/UserComponent';
 import generateUniquePositions from "../../helpers/generateUniquePositions.js";
 
 export default function SearchingPage() {
+    const data = useFirebaseData();
     const [searchTerm, setSearchTerm] = useState('');
     const [searchResults, setSearchResults] = useState([]);
     const [searchMessage, setSearchMessage] = useState('');
@@ -12,7 +13,7 @@ export default function SearchingPage() {
     const [isIntersectingThreshold, setIsIntersectingThreshold] = useState({ top: 0, left: 0 });
     const [activeUser, setActiveUser] = useState(null);
 
-    const users = useMemo(() => userData.members, []);
+    const users = useMemo(() => data.members, []);
     const allPositions = useMemo(() => generateUniquePositions(isIntersectingThreshold, users), [isIntersectingThreshold, users]);
 
     useEffect(() => {

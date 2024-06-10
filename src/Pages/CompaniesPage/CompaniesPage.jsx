@@ -1,11 +1,12 @@
 import "./CompaniesPage.scss";
 import "../SearchingPage/SearchingPage.scss";
-import data from "../../../data.json";
+import useFirebaseData from '../../firebase/useFirebaseData.js';
 import Departments from "../../Components/Departments/Departments";
 import { randomIntFromInterval } from "../../helpers/commonFunctions";
 import { useState, useMemo } from "react";
 
 const CompaniesPage = () => {
+  const data = useFirebaseData();
   const [searchTerm, setSearchTerm] = useState("");
 
   const members = data.members;
