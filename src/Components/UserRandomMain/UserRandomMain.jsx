@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import data from '../../../data.json';
+import useFirebaseData from '../../firebase/useFirebaseData.js';
 
 const UserRandomMain = () => {
+  const data = useFirebaseData();
   const members = data.members;
   const companies = data.companies;
   const directions = data.directions;

@@ -1,4 +1,4 @@
-import data from "../../../data.json";
+import useFirebaseData from '../../firebase/useFirebaseData.js';
 import MainDepartments from "../../Components/Main/MainDepartments/MainDepartments";
 import MainProfessions from "../../Components/Main/MainProfessions/MainProfessions";
 import MainUsers from "../../Components/Main/MainUsers/MainUsers";
@@ -6,6 +6,7 @@ import { randomIntFromInterval } from "../../helpers/commonFunctions";
 import "./MainScreen.scss";
 
 const MainScreen = () => {
+  const data = useFirebaseData();
   const members = data.members;
 
   const shuffleArray = (array) => {

@@ -1,11 +1,12 @@
 import "./DirectionsPage.scss";
 import "../SearchingPage/SearchingPage.scss";
-import data from "../../../data.json";
+import useFirebaseData from '../../firebase/useFirebaseData.js';
 import DirectionsComponent from "../../Components/DirectionsComponent/DirectionsComponent";
 import { randomIntFromInterval } from "../../helpers/commonFunctions";
 import { useState, useMemo } from "react";
 
 const DirectionsPage = () => {
+  const data = useFirebaseData();
   const [searchTerm, setSearchTerm] = useState("");
 
   const members = data.members;

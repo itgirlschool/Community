@@ -2,11 +2,13 @@ import "./MainUsers.scss";
 import "../../../Pages/Main/MainScreen.scss";
 import { useState, useEffect } from "react";
 import UserComponent from "../../UserComponent/UserComponent";
-import data from "../../../../data.json";
+import useFirebaseData from '../../../firebase/useFirebaseData.js';
 
-const arrayOfUsers = data.members;
+
 
 const MainUsers = ({ arrayOfMembers }) => {
+  const data = useFirebaseData();
+  const arrayOfUsers = data.members;
   const [activeUser, setActiveUser] = useState(null);
   const handleUserHoverEnter = (userName) => {
     setActiveUser(userName);

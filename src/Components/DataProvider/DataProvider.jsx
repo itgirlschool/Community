@@ -1,7 +1,8 @@
 import { useState } from "react";
-import data from "../../../data.json";
+import useFirebaseData from '../../firebase/useFirebaseData.js';
 
 const DataProvider = ({ children }) => {
+  const data = useFirebaseData();
   const [selectedCompany, setSelectedCompany] = useState(null);
   const [selectedDirection, setSelectedDirection] = useState(null);
 

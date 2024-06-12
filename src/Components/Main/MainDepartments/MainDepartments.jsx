@@ -2,8 +2,9 @@ import { NavLink } from "react-router-dom";
 import "../../../Pages/Main/MainScreen.scss";
 import "./MainDepartments.scss";
 import randomProperties from "../../../helpers/RandomPosition";
-import data from "../../../../data.json";
 import { randomIntFromInterval } from "../../../helpers/commonFunctions";
+import useFirebaseData from '../../../firebase/useFirebaseData.js';
+
 
 const arrayOfPosition = [
   "position-left-start",
@@ -13,6 +14,11 @@ const arrayOfPosition = [
   "position-right-start",
 ];
 const arrayOfColors = ["violet300", "violet400", "violet500"];
+
+
+const MainDepartments = ({ arrayOfCompaniesPositions, handleCompanyClick }) => {
+const data = useFirebaseData();
+
 const findId = (companyName) => {
   for (let i = 0; i < data.companies.length; i++) {
     if (data.companies[i].name === companyName) {
@@ -20,8 +26,6 @@ const findId = (companyName) => {
     }
   }
 };
-
-const MainDepartments = ({ arrayOfCompaniesPositions, handleCompanyClick }) => {
   return (
     <div className="mainscreen-main__items">
       {arrayOfCompaniesPositions.map((company, index) => {
