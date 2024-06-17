@@ -1,6 +1,5 @@
 import './UserModal.scss';
 import { Dialog } from '@headlessui/react';
-import userData from '../../../data.json';
 
 import facebookActive from '../../assets/images/vectors/facebookActive.svg';
 import facebookNull from '../../assets/images/vectors/facebookNull.svg';

@@ -3,10 +3,11 @@ import "./Companies.scss";
 import "../../style/vars.scss";
 import CompanyPage from "../../Components/CompanyPage/CompanyPage";
 import DataProvider from "../../Components/DataProvider/DataProvider";
-import data from "../../../data.json";
+import useFirebaseData from '../../firebase/useFirebaseData.js';
 import { findCompany, findMembersInCompany } from "../../helpers/findUsers";
 
 function Companies() {
+  const data = useFirebaseData();
   const { id } = useParams();
 
   const selectedCompany = findCompany(data.companies, id);

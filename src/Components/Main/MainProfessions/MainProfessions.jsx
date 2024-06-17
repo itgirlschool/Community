@@ -3,7 +3,7 @@ import "../../../Pages/Main/MainScreen.scss";
 import "./MainProfessions.scss";
 import randomProperties from "../../../helpers/RandomPosition";
 import { randomIntFromInterval } from "../../../helpers/commonFunctions";
-import data from "../../../../data.json";
+import useFirebaseData from '../../../firebase/useFirebaseData.js';
 
 const arrayOfPosition = [
   "position-left-start",
@@ -14,14 +14,16 @@ const arrayOfPosition = [
 ];
 
 const arrayOfColors = ["pink100", "pink200", "pink400", "pink500"];
-const findId = (directionName) => {
+
+const MainProfessions = ({ arrayOfProfessions, handleDirectionClick }) => {
+  const data = useFirebaseData();
+  const findId = (directionName) => {
   for (let i = 0; i < data.directions.length; i++) {
     if (data.directions[i].name === directionName) {
       return data.directions[i].id;
     }
   }
 };
-const MainProfessions = ({ arrayOfProfessions, handleDirectionClick }) => {
   return (
     <div className="mainscreen-main__items">
       {arrayOfProfessions.map((direction, index) => {

@@ -3,10 +3,11 @@ import "./Directions.scss";
 import "../../style/vars.scss";
 import CompanyPage from "../../Components/CompanyPage/CompanyPage";
 import DataProvider from "../../Components/DataProvider/DataProvider";
-import data from "../../../data.json";
+import useFirebaseData from '../../firebase/useFirebaseData.js';
 import { findCompany, findMembersInDirection } from "../../helpers/findUsers";
 
 function Directions() {
+  const data = useFirebaseData();
   const { id } = useParams();
 
   const selectedDirection = findCompany(data.directions, id);
