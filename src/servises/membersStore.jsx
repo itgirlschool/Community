@@ -44,6 +44,8 @@ class MembersStore {
     addedSocials = [];
     memberHobbies = [];
 
+    @observable editingMember = null;
+
     constructor() {
         makeAutoObservable(this);
     }
@@ -158,6 +160,7 @@ class MembersStore {
             console.error("Ошибка при добавлении пользователя: ", error);
         }
     };
+
 }
 
 export const membersStore = new MembersStore();
