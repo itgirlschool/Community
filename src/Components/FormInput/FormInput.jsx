@@ -1,8 +1,12 @@
 const FormInput = ({ label, type, name, value, onChange, options, checked, ...props }) => {
     let inputElement = null;
+    let labelContent = null;
 
     switch (type) {
         case 'text':
+            inputElement = <input type={type} name={name} value={value} onChange={onChange} {...props} />;
+            labelContent = <>{label}{inputElement}</>;
+            break;
         case 'radio':
         case 'checkbox':
             inputElement = (
@@ -15,6 +19,7 @@ const FormInput = ({ label, type, name, value, onChange, options, checked, ...pr
                     {...props}
                 />
             );
+            labelContent = <>{inputElement}{label}</>;
             break;
         case 'select':
             inputElement = (
@@ -26,15 +31,16 @@ const FormInput = ({ label, type, name, value, onChange, options, checked, ...pr
                     ))}
                 </select>
             );
+            labelContent = <>{label}{inputElement}</>;
             break;
         default:
             inputElement = <input type="text" {...props} />;
+            labelContent = <>{label}{inputElement}</>;
     }
 
     return (
         <label>
-            {label}
-            {inputElement}
+            {labelContent}
         </label>
     );
 };

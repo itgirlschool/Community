@@ -1,8 +1,10 @@
-import { makeAutoObservable, toJS } from 'mobx';
+import { makeAutoObservable, toJS, action, runInAction } from 'mobx';
 import { getDatabase, ref, set, get } from 'firebase/database';
 
 class MembersStore {
     lastMemberId = 0;
+    companies = [];
+    directions = [];
     member = {
         companies: [],
         directions: [],
@@ -44,10 +46,23 @@ class MembersStore {
     addedSocials = [];
     memberHobbies = [];
 
-    @observable editingMember = null;
-
     constructor() {
-        makeAutoObservable(this);
+        makeAutoObservable(this, {
+            // Указываем, что editingMember не должен быть наблюдаемым
+            editingMember: false,
+            // Указываем, что fetchLastMemberId и addMember являются действиями
+            fetchLastMemberId: action.bound,
+            addMember: action.bound,
+            // Можно также указать другие свойства и методы, если это необходимо
+        });
+    }
+
+    setCompanies = (companies) => {
+        this.companies = companies;
+    }
+
+    setDirections = (directions) => {
+        this.directions = directions;
     }
 
     setMember = (name, value) => {
@@ -127,7 +142,11 @@ class MembersStore {
             skills: toJS(this.addedSkills),
         }
         console.log(member);
-        this.addMember(member);
+        if (this.editingMember) {
+            this.updateMember(member);
+        } else {
+            this.addMember(member);
+        }
     };
 
     // Метод для получения последнего ID пользователя из базы данных
@@ -160,7 +179,64 @@ class MembersStore {
             console.error("Ошибка при добавлении пользователя: ", error);
         }
     };
+    
 
+    setMemberData(member) { 
+            const getNameById = (id, type) => {
+                if (type === 'companies') {
+                    return toJS(this.companies)[id.id].name || 'Неизвестная компания';
+                } else if (type === 'directions') {
+                    return toJS(this.directions)[id.id].name || 'Неизвестное направление';
+                }
+            };
+    
+        this.member = { ...member };
+        this.addedCompanies = member.companies ? member.companies.map(companyId => ({ id: companyId.id, name: getNameById(companyId, 'companies') })) : [];
+        this.addedDirections = member.directions ? member.directions.map(directionId => ({ id: directionId.id, name: getNameById(directionId, 'directions') })) : [];
+        this.addedSkills = member.skills ? member.skills.map(skill => ({ ...skill })) : [];
+        this.addedSocials = member.social ? member.social.map(social => ({ ...social })) : [];
+        this.memberHobbies = member.hobbies ? [...member.hobbies] : [];
+    }
+    
+    startEditing(member) {
+        this.editingMember = member;
+        this.setMemberData(member);
+    }
+
+    // Метод для обновления участника
+    updateMember(updatedMember) {
+        runInAction(async () => {
+            const database = getDatabase();
+            const databaseRef = ref(database, `members/${this.editingMember.id}`);
+            try {
+                await set(databaseRef, {
+                    ...updatedMember,
+                    id: this.editingMember.id
+                });
+                console.log(`Участник обновлен с ID: ${this.editingMember.id}`);
+                this.editingMember = null;
+            } catch (error) {
+                console.error("Ошибка при обновлении участника: ", error);
+            }
+        });
+    }
+
+    removeCompany = (index) => {
+        
+        this.addedCompanies.splice(index, 1);
+    };
+    
+    removeDirection = (index) => {
+        this.addedDirections.splice(index, 1);
+    };
+    
+    removeSkill = (index) => {
+        this.addedSkills.splice(index, 1);
+    };
+    
+    removeSocial = (index) => {
+        this.addedSocials.splice(index, 1);
+    };
 }
 
 export const membersStore = new MembersStore();

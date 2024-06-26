@@ -3,23 +3,23 @@ import { observer } from 'mobx-react';
 import { membersStore } from '../../servises/membersStore.jsx';
 import useFirebaseData from '../../firebase/useFirebaseData.js';
 import FormInput from '../../Components/FormInput/FormInput.jsx';
-
+import AddedItem from '../../Components/AddedItem/AddedItem.jsx';
 import "./Admin.scss";
 
 const Admin = observer(() => {
+    const data = useFirebaseData(); 
+
     useEffect(() => {
         membersStore.fetchLastMemberId();
-    }, []); 
-    
-    const data = useFirebaseData();
+        membersStore.setCompanies(data.companies);
+        membersStore.setDirections(data.directions);
+    }, [data]); 
 
-    // Обработчики изменений для полей ввода
     const handleInputChange = (event) => {
         const { name, value } = event.target;
         membersStore.setMember(name, value);
     };
 
-    // Обработчики изменений для статуса компании
     const handleCompanyStatusChange = (event) => {
         const { value } = event.target;
         membersStore.setCompany('status', value);
@@ -29,6 +29,7 @@ const Admin = observer(() => {
     const handleAddCompany = () => {
         membersStore.addCompany();
     };
+
     const handleCompanyChange = (event) => {
         // Преобразование значения из event.target.value в число
         const companyId = Number(event.target.value);
@@ -65,7 +66,7 @@ const Admin = observer(() => {
         console.error('Выбранное направление не найдено');
         }
     }
-    
+
     // Обработчики изменений для навыков
     const handleSkillChange = (event) => {
         const { name, value } = event.target;
@@ -87,15 +88,16 @@ const Admin = observer(() => {
         membersStore.addSocial();
     };
 
+    const handlePhotoChange = (event) => {
+        const { value } = event.target;
+        membersStore.setPhoto(value);
+    };
+
+
     // Обработчик отправки формы
     const handleSubmit = (event) => {
         event.preventDefault();
         membersStore.submitMember();
-    };
-
-    const handlePhotoChange = (event) => {
-        const { value } = event.target;
-        membersStore.setPhoto(value);
     };
 
     return (
@@ -120,9 +122,12 @@ const Admin = observer(() => {
                     onChange={handleInputChange}
                 />
                 {membersStore.addedCompanies.map((comp, index) => (
-                    <div key={index}>
-                        <span>{comp.name}</span> : <span>{comp.status}</span>
-                    </div>
+                    <AddedItem
+                    key={index}
+                    name={comp.name}
+                    status={comp.status}
+                    onRemove={() => membersStore.removeCompany(index)}
+                />
                 ))}
                 <FormInput
                     label="Компания:"
@@ -153,9 +158,12 @@ const Admin = observer(() => {
                 />
                 <button type="button" onClick={handleAddCompany}>Добавить</button>
                 {membersStore.addedDirections.map((direction, index) => (
-                    <div key={index}>
-                        <span>{direction.name}</span> : <span>{direction.status}</span>
-                    </div>
+                    <AddedItem
+                        key={index}
+                        name={direction.name}
+                        status={direction.status}
+                        onRemove={() => membersStore.removeDirection(index)}
+                    />
                 ))}
                 <FormInput
                     label="Направление:"
@@ -186,14 +194,17 @@ const Admin = observer(() => {
                 />
                 <button type="button" onClick={handleAddDirections}>Добавить направление</button>
                 {membersStore.addedSkills.map((skill, index) => (
-                    <div key={index}>
-                        <span>{skill.name}</span> : <span>{skill.status}</span>
-                    </div>
+                    <AddedItem
+                        key={index}
+                        name={skill.name}
+                        status={skill.status}
+                        onRemove={() => membersStore.removeSkill(index)}
+                    />
                 ))}
                 <FormInput
                     label="Название навыка:"
                     type="text"
-                    name="skillName"
+                    name="name"
                     value={membersStore.skill.name}
                     onChange={handleSkillChange}
                 />
@@ -255,9 +266,12 @@ const Admin = observer(() => {
                 />
                 <button type="button" onClick={handleAddSocial}>Добавить соц.сеть</button>
                 {membersStore.addedSocials.map((social, index) => (
-                    <div key={index}>
-                        <span>{social.type}</span> : <span>{social.link}</span>
-                    </div>
+                    <AddedItem
+                        key={index}
+                        name={social.type}
+                        status={social.link}
+                        onRemove={() => membersStore.removeSocial(index)}
+                    />
                 ))}
                 <FormInput
                     label="Фото:"
@@ -277,7 +291,7 @@ const Admin = observer(() => {
                         || membersStore.addedSkills.length === 0 
                         || membersStore.addedSocials.length === 0}
                 >
-                    Сохранить
+                    {membersStore.editingMember ? 'Обновить' : 'Сохранить'}
                 </button>
             </form>
 
@@ -353,7 +367,7 @@ const Admin = observer(() => {
                         ))}
                     </span>
                     {member.photo && <img src={member.photo} alt={`${member.firstName} ${member.lastName}`} />}
-                    <button>Редактировать информацию</button>
+                    <button onClick={() => membersStore.startEditing(member)}>Редактировать информацию</button>
                     <button>Удалить участника</button>
                 </div>
             ))}
