@@ -1,0 +1,15 @@
+$button-text-color: #555;
+
+button {
+    background-color: transparent;
+    color: $button-text-color;
+    padding: 2px 5px;
+    border: 1px solid $button-text-color;
+    border-radius: 4px;
+    margin: 5px;
+    cursor: pointer;
+    }
+
+    button:hover {
+        color: black;
+    }

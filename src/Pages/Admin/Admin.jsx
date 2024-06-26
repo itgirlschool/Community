@@ -4,6 +4,7 @@ import { membersStore } from '../../servises/membersStore.jsx';
 import useFirebaseData from '../../firebase/useFirebaseData.js';
 import FormInput from '../../Components/FormInput/FormInput.jsx';
 import AddedItem from '../../Components/AddedItem/AddedItem.jsx';
+import ListItem from '../../Components/ListItem/ListItem.jsx';
 import "./Admin.scss";
 
 const Admin = observer(() => {
@@ -13,6 +14,7 @@ const Admin = observer(() => {
         membersStore.fetchLastMemberId();
         membersStore.setCompanies(data.companies);
         membersStore.setDirections(data.directions);
+        membersStore.setDirections(data.hobbies);
     }, [data]); 
 
     const handleInputChange = (event) => {
@@ -225,6 +227,7 @@ const Admin = observer(() => {
                     onChange={handleSkillStatusChange}
                 />
                 <button type="button" onClick={handleAddSkill}>Добавить навык</button>
+                <label>Хобби:</label>
                 {data.hobbies.map((hobby) => (
                     <FormInput
                         key={hobby.id}
@@ -299,6 +302,7 @@ const Admin = observer(() => {
             <h2>Все участники</h2>
             {data.members.map((member) => (
                 <div key={member.id} className="member">
+                    {member.photo && <img src={member.photo} alt={`${member.firstName} ${member.lastName}`} />}
                     <span className="firstName">{member.firstName}</span>
                     <span className="lastName">{member.lastName}</span>
                     <span className="info">
@@ -360,17 +364,83 @@ const Admin = observer(() => {
                     Соц.сети:
                         <br />
                         {member.social.map(s => (
-                            <>
+                            <React.Fragment key={s.type || index}>
                             {s.type}: {s.link}
                             <br />
-                            </>
+                            </React.Fragment>
                         ))}
                     </span>
-                    {member.photo && <img src={member.photo} alt={`${member.firstName} ${member.lastName}`} />}
                     <button onClick={() => membersStore.startEditing(member)}>Редактировать информацию</button>
-                    <button>Удалить участника</button>
+                    <button onClick={() => membersStore.removeMember(member.id)}>Удалить участника</button>
                 </div>
             ))}
+            </div>
+
+            <div className="companies-container">
+                <h2>Все компании</h2>
+                {data.companies.map((company) => (
+                    <ListItem
+                        key={company.id}
+                        item={company}
+                        editAction={membersStore.editCompanyFromList}
+                        removeAction={membersStore.removeCompanyFromList}
+                    />
+                ))}
+                
+                <FormInput
+                    label="Название компании:"
+                    type="text"
+                    name="companyName"
+                    value={membersStore.company.name}
+                    onChange={(event) => membersStore.setCompany('name', event.target.value)}
+                />
+                <button type="button" onClick={() => membersStore.addCompanyToDatabase(membersStore.company)}>
+                    Добавить компанию
+                </button>
+            </div>
+
+            <div className="directions-container">
+                <h2>Все направления</h2>
+                {data.directions.map((direction) => (
+                    <ListItem
+                        key={direction.id}
+                        item={direction}
+                        editAction={membersStore.editDirectionFromList}
+                        removeAction={membersStore.removeDirectionFromList}
+                    />
+                ))}
+                <FormInput
+                    label="Название направления:"
+                    type="text"
+                    name="directionName"
+                    value={membersStore.direction.name}
+                    onChange={(event) => membersStore.setDirection('name', event.target.value)}
+                />
+                <button type="button" onClick={() => membersStore.addDirectionToDatabase(membersStore.direction)}>
+                    Добавить направление
+                </button>
+            </div>
+
+            <div className="hobbies-container">
+                <h2>Все хобби</h2>
+                {data.hobbies.map((hobby) => (
+                    <ListItem
+                        key={hobby.id}
+                        item={hobby}
+                        editAction={membersStore.editHobbyFromList}
+                        removeAction={membersStore.removeHobbyFromList}
+                    />
+                ))}
+                <FormInput
+                    label="Название хобби:"
+                    type="text"
+                    name="hobbyName"
+                    value={membersStore.hobby.name}
+                    onChange={(event) => membersStore.setHobby('name', event.target.value)}
+                />
+                <button type="button" onClick={() => membersStore.addHobbyToDatabase(membersStore.hobby)}>
+                    Добавить хобби
+                </button>
             </div>
         </main>
     );
