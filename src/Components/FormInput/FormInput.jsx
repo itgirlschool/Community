@@ -4,20 +4,25 @@ const FormInput = ({ label, type, name, value, onChange, options, checked, ...pr
     let inputElement = null;
     let labelContent = null;
 
+    // Убедитесь, что value не undefined
+    const inputValue = value ?? '';
+
     switch (type) {
         case 'text':
-            inputElement = <input type={type} name={name} value={value} onChange={onChange} {...props} />;
+            inputElement = <input type={type} name={name} value={inputValue} onChange={onChange} {...props} />;
             labelContent = <>{label}{inputElement}</>;
             break;
         case 'radio':
         case 'checkbox':
+            // Для radio и checkbox, если checked не определено, используйте false
+            const inputChecked = checked ?? false;
             inputElement = (
                 <input
                     type={type}
                     name={name}
-                    value={value}
+                    value={inputValue}
                     onChange={onChange}
-                    checked={checked}
+                    checked={inputChecked}
                     {...props}
                 />
             );
@@ -25,18 +30,19 @@ const FormInput = ({ label, type, name, value, onChange, options, checked, ...pr
             break;
         case 'select':
             inputElement = (
-                <select name={name} value={value} onChange={onChange} {...props}>
-                    {options.map(option => (
-                        <option key={option.value} value={option.value}>
-                            {option.label}
-                        </option>
-                    ))}
-                </select>
+            <select name={name} value={inputValue} onChange={onChange} {...props}>
+                <option value="" disabled hidden>Выбрать</option>
+                {options.map(option => (
+                    <option key={option.value} value={option.value}>
+                        {option.label}
+                    </option>
+                ))}
+            </select>
             );
             labelContent = <>{label}{inputElement}</>;
             break;
         default:
-            inputElement = <input type="text" {...props} />;
+            inputElement = <input type="text" value={inputValue} {...props} />;
             labelContent = <>{label}{inputElement}</>;
     }
 

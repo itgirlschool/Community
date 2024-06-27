@@ -31,13 +31,13 @@ const ListItem = ({ item, editAction, removeAction }) => {
             )}
             {isEditing ? (
                 <>
-                    <button onClick={handleSave}>✔</button>
-                    <button onClick={handleBack}>↩</button>
+                    <button title="Сохранить" onClick={handleSave}>✔</button>
+                    <button title="Отменить" onClick={handleBack}>↩</button>
                 </>
             ) : (
                 <>
-                    <button onClick={handleEdit}>✎</button>
-                    <button onClick={() => removeAction(item.id)}>✖</button>
+                    <button title="Редактировать" onClick={handleEdit}>✎</button>
+                    <button title="Удалить" onClick={() => removeAction(item.id)}>✖</button>
                 </>
             )}
         </div>
