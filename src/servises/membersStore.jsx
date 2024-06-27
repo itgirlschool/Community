@@ -52,6 +52,10 @@ class MembersStore {
     addedSocials = [];
     memberHobbies = [];
 
+    isCompanyInputFilled = false;
+    isDirectionInputFilled = false;
+    isHobbyInputFilled = false;
+
     constructor() {
         makeAutoObservable(this, {
             // Указываем, что editingMember не должен быть наблюдаемым
@@ -69,6 +73,10 @@ class MembersStore {
 
     setDirections = (directions) => {
         this.directions = directions;
+    }
+
+    setHobbies = (hobbies) => {
+        this.hobbies = hobbies;
     }
 
     setMember = (name, value) => {
@@ -154,6 +162,17 @@ class MembersStore {
     removeSocial = (index) => {
         this.addedSocials.splice(index, 1);
     };
+    setCompanyInputFilled = (isFilled) => {
+        this.isCompanyInputFilled = isFilled;
+    };
+
+    setDirectionInputFilled = (isFilled) => {
+        this.isDirectionInputFilled = isFilled;
+    };
+
+    setHobbyInputFilled = (isFilled) => {
+        this.isHobbyInputFilled = isFilled;
+    };
 
     submitMember = () => {
         // Логика для обработки и отправки данных пользователя
@@ -167,13 +186,36 @@ class MembersStore {
             directions: toJS(this.addedDirections),
             social: toJS(this.addedSocials),
             skills: toJS(this.addedSkills),
-        }
+        };
         console.log(member);
+    
         if (this.editingMember) {
             this.updateMember(member);
         } else {
             this.addMember(member);
         }
+        // Сброс состояния после отправки
+        this.resetMemberState();
+    };
+    
+    resetMemberState = () => {
+        this.member = {
+            firstName: '',
+            lastName: '',
+            photo: '',
+            quote: '',
+            companies: [],
+            directions: [],
+            hobbies: [],
+            skills: [],
+            social: [],
+        };
+    
+        this.addedCompanies = [];
+        this.addedDirections = [];
+        this.addedSkills = [];
+        this.memberHobbies = [];
+        this.addedSocials = [];
     };
 
     // Метод для получения последнего ID пользователя из базы данных
@@ -235,13 +277,13 @@ class MembersStore {
         const directionRef = ref(database, `directions/${newDirectionId}`);
         try {
             await set(directionRef, {
-                ...directionData,
-                id: newDirectionId
+                id: newDirectionId,
+                name: directionData.name
             });
             runInAction(() => {
                 this.directions.push({
-                    ...directionData,
-                    id: newDirectionId
+                    id: newDirectionId,
+                    name: directionData.name
                 });
                 this.direction = { id: '', name: '', status: '' }; // Сброс текущего состояния направления
             });
@@ -283,14 +325,39 @@ class MembersStore {
         }
     };
 
-    setMemberData(member) { 
-            const getNameById = (id, type) => {
+    removeCompanyFromMember(companyId) {
+        this.member.companies = this.member.companies.filter(comp => comp.id !== companyId);
+
+    }
+    
+    removeDirectionFromMember(directionId) {
+        this.member.directions = this.member.directions.filter(dir => dir.id !== directionId);
+    }
+
+    setMemberData(member) {
+        const getNameById = (id, type) => {
+            let items;
+            if (type === 'companies') {
+                items = toJS(this.companies);
+            } else if (type === 'directions') {
+                items = toJS(this.directions);
+            }
+        
+            // Используйте метод find для поиска элемента по id
+            const item = items.find(item => item.id === id.id);
+        
+            if (!item) {
+                console.error(`Элемент с идентификатором ${id.id} не найден в ${type}.`);
+                // Удаление элемента из списка участника
                 if (type === 'companies') {
-                    return toJS(this.companies)[id.id].name || 'Неизвестная компания';
+                    this.removeCompanyFromMember(id.id);
                 } else if (type === 'directions') {
-                    return toJS(this.directions)[id.id].name || 'Неизвестное направление';
+                    this.removeDirectionFromMember(id.id);
                 }
-            };
+                return type === 'companies' ? 'Неизвестная компания' : 'Неизвестное направление';
+            }
+            return item.name;
+        };
     
         this.member = { ...member };
         this.addedCompanies = member.companies ? member.companies.map(companyId => ({ id: companyId.id, name: getNameById(companyId, 'companies') })) : [];
@@ -327,7 +394,6 @@ class MembersStore {
                     id: this.editingMember.id
                 });
                 console.log(`Участник обновлен с ID: ${this.editingMember.id}`);
-                this.editingMember = null;
             } catch (error) {
                 console.error("Ошибка при обновлении участника: ", error);
             }

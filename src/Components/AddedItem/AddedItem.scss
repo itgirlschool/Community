@@ -1,0 +1,8 @@
+.added-item-container {
+    display: flex;
+    gap: 5px;
+    > button {
+        padding: 0;
+        border: none;
+    }
+}

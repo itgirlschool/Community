@@ -13,7 +13,7 @@ h2 {
     line-height: 24px;
 }
 
-.admin__form {
+form {
 background-color: $form-bg-color;
 border: 1px solid $form-border-color;
 padding: $form-padding;
@@ -25,7 +25,8 @@ margin: 0 auto;
     label {
         color: $label-color;
         display: block;
-        margin: 10px 0;}
+        margin: 10px 0;
+    }
 
         input[type="text"],
         select {
@@ -85,10 +86,35 @@ margin: 0 auto;
     font-size: 16px;
     color: #333;
 }
-.member .firstName {
+.member .firstName, .lastName {
     font-weight: bold;
 }
 .member .info {
     font-size: 14px;
     color: #666;
+}
+
+.buttons-container {
+    display: flex;
+    gap: 10px;
+    margin: 10px 0;
+}
+
+.add-button {
+    display: block;
+    background-color: $button-bg-color;
+    color: $button-text-color;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    margin-top: 20px;
+    cursor: pointer;
+
+    &:hover {
+        background-color: darken($button-bg-color, 10%);
+    }
+            &:disabled {
+            background-color: $label-color;
+            cursor: none;
+        }
 }

@@ -19,7 +19,7 @@ const ListItem = ({ item, editAction, removeAction }) => {
     };
 
     return (
-        <div>
+        <div className='list-item-container'>
             {isEditing ? (
                 <input
                     type="text"

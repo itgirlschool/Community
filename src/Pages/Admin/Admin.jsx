@@ -8,13 +8,13 @@ import ListItem from '../../Components/ListItem/ListItem.jsx';
 import "./Admin.scss";
 
 const Admin = observer(() => {
-    const data = useFirebaseData(); 
+    const data = useFirebaseData();
 
     useEffect(() => {
-        membersStore.fetchLastMemberId();
-        membersStore.setCompanies(data.companies);
-        membersStore.setDirections(data.directions);
-        membersStore.setDirections(data.hobbies);
+            membersStore.fetchLastMemberId();
+            membersStore.setCompanies(data.companies);
+            membersStore.setDirections(data.directions);
+            membersStore.setHobbies(data.hobbies);
     }, [data]); 
 
     const handleInputChange = (event) => {
@@ -95,11 +95,26 @@ const Admin = observer(() => {
         membersStore.setPhoto(value);
     };
 
+    const handleCompanyListChange = (event) => {
+        membersStore.setCompany('name', event.target.value)
+        membersStore.setCompanyInputFilled(event.target.value.trim() !== '');
+    };
+
+    const handleDirectionListChange = (event) => {
+        membersStore.setDirection('name', event.target.value)
+        membersStore.setDirectionInputFilled(event.target.value.trim() !== '');
+    };
+
+    const handleHobbyListChange = (event) => {
+        membersStore.setHobby('name', event.target.value)
+        membersStore.setHobbyInputFilled(event.target.value.trim() !== '');
+    };
 
     // Обработчик отправки формы
     const handleSubmit = (event) => {
         event.preventDefault();
         membersStore.submitMember();
+        event.target.reset();
     };
 
     return (
@@ -123,14 +138,6 @@ const Admin = observer(() => {
                     value={membersStore.member.lastName}
                     onChange={handleInputChange}
                 />
-                {membersStore.addedCompanies.map((comp, index) => (
-                    <AddedItem
-                    key={index}
-                    name={comp.name}
-                    status={comp.status}
-                    onRemove={() => membersStore.removeCompany(index)}
-                />
-                ))}
                 <FormInput
                     label="Компания:"
                     type="select"
@@ -141,7 +148,7 @@ const Admin = observer(() => {
                         label: company.name,
                         value: company.id
                     }))}
-                />
+                    />
                 <FormInput
                     label="Работает"
                     type="radio"
@@ -149,7 +156,7 @@ const Admin = observer(() => {
                     value="Работает"
                     checked={membersStore.company.status === 'Работает'}
                     onChange={handleCompanyStatusChange}
-                />
+                    />
                 <FormInput
                     label="Работала"
                     type="radio"
@@ -157,15 +164,15 @@ const Admin = observer(() => {
                     value="Работала"
                     checked={membersStore.company.status === 'Работала'}
                     onChange={handleCompanyStatusChange}
-                />
-                <button type="button" onClick={handleAddCompany}>Добавить</button>
-                {membersStore.addedDirections.map((direction, index) => (
-                    <AddedItem
-                        key={index}
-                        name={direction.name}
-                        status={direction.status}
-                        onRemove={() => membersStore.removeDirection(index)}
                     />
+                <button type="button" onClick={handleAddCompany}>Добавить</button>
+                {membersStore.addedCompanies.map((comp, index) => (
+                    <AddedItem
+                    key={index}
+                    name={comp.name}
+                    status={comp.status}
+                    onRemove={() => membersStore.removeCompany(index)}
+                />
                 ))}
                 <FormInput
                     label="Направление:"
@@ -185,7 +192,7 @@ const Admin = observer(() => {
                     value="Уже знает"
                     checked={membersStore.direction.status === 'Уже знает'}
                     onChange={handleDirectionStatusChange}
-                />
+                    />
                 <FormInput
                     label="Хочет изучить"
                     type="radio"
@@ -193,14 +200,14 @@ const Admin = observer(() => {
                     value="Хочет изучить"
                     checked={membersStore.direction.status === 'Хочет изучить'}
                     onChange={handleDirectionStatusChange}
-                />
+                    />
                 <button type="button" onClick={handleAddDirections}>Добавить направление</button>
-                {membersStore.addedSkills.map((skill, index) => (
+                {membersStore.addedDirections.map((direction, index) => (
                     <AddedItem
                         key={index}
-                        name={skill.name}
-                        status={skill.status}
-                        onRemove={() => membersStore.removeSkill(index)}
+                        name={direction.name}
+                        status={direction.status}
+                        onRemove={() => membersStore.removeDirection(index)}
                     />
                 ))}
                 <FormInput
@@ -225,8 +232,16 @@ const Admin = observer(() => {
                     value="Хочет изучить"
                     checked={membersStore.skill.status === 'Хочет изучить'}
                     onChange={handleSkillStatusChange}
-                />
+                    />
                 <button type="button" onClick={handleAddSkill}>Добавить навык</button>
+                    {membersStore.addedSkills.map((skill, index) => (
+                        <AddedItem
+                            key={index}
+                            name={skill.name}
+                            status={skill.status}
+                            onRemove={() => membersStore.removeSkill(index)}
+                        />
+                    ))}
                 <label>Хобби:</label>
                 {data.hobbies.map((hobby) => (
                     <FormInput
@@ -297,9 +312,9 @@ const Admin = observer(() => {
                     {membersStore.editingMember ? 'Обновить' : 'Сохранить'}
                 </button>
             </form>
-
-            <div className="member-container">
+            
             <h2>Все участники</h2>
+            <div className="member-container">
             {data.members.map((member) => (
                 <div key={member.id} className="member">
                     {member.photo && <img src={member.photo} alt={`${member.firstName} ${member.lastName}`} />}
@@ -370,8 +385,10 @@ const Admin = observer(() => {
                             </React.Fragment>
                         ))}
                     </span>
-                    <button onClick={() => membersStore.startEditing(member)}>Редактировать информацию</button>
-                    <button onClick={() => membersStore.removeMember(member.id)}>Удалить участника</button>
+                    <div className='buttons-container'>
+                        <button onClick={() => membersStore.startEditing(member)}>Редактировать информацию</button>
+                        <button onClick={() => membersStore.removeMember(member.id)}>Удалить участника</button>
+                    </div>
                 </div>
             ))}
             </div>
@@ -392,9 +409,14 @@ const Admin = observer(() => {
                     type="text"
                     name="companyName"
                     value={membersStore.company.name}
-                    onChange={(event) => membersStore.setCompany('name', event.target.value)}
+                    onChange={handleCompanyListChange}
                 />
-                <button type="button" onClick={() => membersStore.addCompanyToDatabase(membersStore.company)}>
+                <button 
+                    className="add-button"
+                    type="button"
+                    onClick={() => {membersStore.addCompanyToDatabase(membersStore.company)}}
+                    disabled={!membersStore.isCompanyInputFilled}
+                >
                     Добавить компанию
                 </button>
             </div>
@@ -414,9 +436,14 @@ const Admin = observer(() => {
                     type="text"
                     name="directionName"
                     value={membersStore.direction.name}
-                    onChange={(event) => membersStore.setDirection('name', event.target.value)}
+                    onChange={handleDirectionListChange}
                 />
-                <button type="button" onClick={() => membersStore.addDirectionToDatabase(membersStore.direction)}>
+                <button
+                    className="add-button"
+                    type="button"
+                    onClick={() => membersStore.addDirectionToDatabase(membersStore.direction)}
+                    disabled={!membersStore.isDirectionInputFilled}
+                >
                     Добавить направление
                 </button>
             </div>
@@ -436,9 +463,14 @@ const Admin = observer(() => {
                     type="text"
                     name="hobbyName"
                     value={membersStore.hobby.name}
-                    onChange={(event) => membersStore.setHobby('name', event.target.value)}
+                    onChange={handleHobbyListChange}
                 />
-                <button type="button" onClick={() => membersStore.addHobbyToDatabase(membersStore.hobby)}>
+                <button
+                    className="add-button"
+                    type="button"
+                    onClick={() => membersStore.addHobbyToDatabase(membersStore.hobby)}
+                    disabled={!membersStore.isHobbyInputFilled}
+                >
                     Добавить хобби
                 </button>
             </div>

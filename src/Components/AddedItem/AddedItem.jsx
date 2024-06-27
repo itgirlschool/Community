@@ -1,7 +1,8 @@
+import './AddedItem.scss'
 const AddedItem = ({ name, status, onRemove}) => (
-    <div>
+    <div className="added-item-container">
         <span>{name}</span> : <span>{status}</span>
-        <button type="button" onClick={onRemove}>Удалить</button>
+        <button type="button" title="Удалить" onClick={onRemove}>✖</button>
     </div>
 );
 
