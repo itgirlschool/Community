@@ -33,7 +33,7 @@ const DirectionsPage = () => {
   const uniqueDirections = data.directions
     .filter((direction) => uniqueCompaniesID.has(direction.id))
     .map((direction) => ({ id: direction.id, name: direction.name }));
-
+    console.log(data.directions)
   let uniqueDirectionsPositions = [];
   for (let i = 0; i < uniqueDirections.length; i++) {
     if (

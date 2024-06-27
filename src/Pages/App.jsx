@@ -7,6 +7,7 @@ import Directions from "./Directions/Directions";
 import MainScreen from "./Main/MainScreen";
 import CompaniesPage from "./CompaniesPage/CompaniesPage";
 import DirectionsPage from "./DirectionsPage/DirectionsPage";
+import Admin from "./Admin/Admin";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
       <Header />
       <Routes>
         <Route path="/" element={<MainScreen />} />
+        <Route path="/admin" element={<Admin />} />
         <Route path="/search" element={<SearchingPage />} />
         <Route path="/companies" element={<CompaniesPage />} />
         <Route path="/directions" element={<DirectionsPage />} />

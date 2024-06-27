@@ -1,4 +1,5 @@
-import data from "./data.json";
+import useFirebaseData from '../../firebase/useFirebaseData.js';
+const data = useFirebaseData();
 
 function getCompanyName(companyId) {
     const company = data.companies.find(company => company.id === companyId);
