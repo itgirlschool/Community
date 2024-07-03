@@ -1,5 +1,3 @@
-import './FormInput.scss'
-
 const FormInput = ({ label, type, name, value, onChange, options, checked, ...props }) => {
     let inputElement = null;
     let labelContent = null;

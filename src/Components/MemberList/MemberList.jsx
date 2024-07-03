@@ -1,5 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react';
+import styles from './MemberList.module.scss'
 
 const MemberList = observer(({ data, membersStore }) => {
     // Функция для прокрутки страницы вверх
@@ -13,7 +14,7 @@ const MemberList = observer(({ data, membersStore }) => {
         <div className="member-container">
             {data.members.map((member) => (
                 <div key={member.id} className="member">
-                    {member.photo && <img src={member.photo} alt={`${member.firstName} ${member.lastName}`} />}
+                    {member.photo && <img className={styles.image} src={member.photo} alt={`${member.firstName} ${member.lastName}`} />}
                     <span className="firstName">{member.firstName}</span>
                     <span className="lastName">{member.lastName}</span>
                     <span className="info">

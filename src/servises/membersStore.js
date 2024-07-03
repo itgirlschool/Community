@@ -1,4 +1,4 @@
-import { makeAutoObservable, toJS, action, runInAction } from 'mobx';
+import { makeAutoObservable, toJS, runInAction } from 'mobx';
 import { firebaseService } from './firebaseService';
 
 class MembersStore {
@@ -14,7 +14,7 @@ class MembersStore {
         hobbies: [],
         id: '',
         lastName: '',
-        photo: '',
+        photo: 'https://firebasestorage.googleapis.com/v0/b/gonetwork-community-1add4.appspot.com/o/member.png?alt=media&token=c37df151-abbd-4bbf-9880-accd49790801',
         quote: '',
         skills: [],
         social: [],
@@ -61,21 +61,30 @@ class MembersStore {
         makeAutoObservable(this, {
             editingMember: false,
         });
+        this.loadInitialData();
     };
-    
+
+    loadInitialData = async () => {
+        await this.loadCompanies();
+        await this.loadDirections();
+    };
+
     //УЧАСТНИКИ
     // Функция для получения последнего ID участника
     fetchLastMemberId = async () => {
         const membersData = await firebaseService.fetchData('members');
-        const lastId = membersData.length > 0 ? Math.max(...membersData.map(member => Number(member.id))) : 0;
-        this.setLastMemberId(lastId);
-    };
+    const lastId = membersData.length > 0 ? Math.max(...membersData.map(member => Number(member.id))) : 0;
+    this.setLastMemberId(lastId);
+};
     // Действие для установки последнего ID пользователя
     setLastMemberId = (newId) => {
         this.lastMemberId = newId;
     };
-    submitMember = () => {
+    submitMember = async() => {
         // Логика для обработки и отправки данных пользователя
+        if (!this.member.photo) {
+            this.member.photo = await this.getPhotoUrlById(this.member.id);
+        }
         const member = {
             firstName: this.member.firstName,
             lastName: this.member.lastName,
@@ -116,36 +125,65 @@ class MembersStore {
             console.error("Ошибка при добавлении участника: ", error);
         }
     };
-    setMemberData(member) {
-        const getNameById = (id, type) => {
-            let items;
-            if (type === 'companies') {
-                items = toJS(this.companies);
-            } else if (type === 'directions') {
-                items = toJS(this.directions);
-            };
-            // Используйте метод find для поиска элемента по id
-            const item = items.find(item => item.id === id.id);
-            if (!item) {
-                console.error(`Элемент с идентификатором ${id.id} не найден в ${type}.`);
-                // Удаление элемента из списка участника
-                if (type === 'companies') {
-                    this.removeCompanyFromMember(id.id);
-                } else if (type === 'directions') {
-                    this.removeDirectionFromMember(id.id);
-                }
-                return type === 'companies' ? 'Неизвестная компания' : 'Неизвестное направление';
-            };
-            return item.name;
-        };
+    
+    async getNameById(id, type) {
+        let items;
+        if (type === 'companies') {
+            await this.loadCompanies();
+            items = toJS(this.companies);
+        } else if (type === 'directions') {
+            await this.loadDirections();
+            items = toJS(this.directions);
+        }
+        const item = items.find(item => item.id === id);
+        if (!item) {
+            console.error(`Элемент с идентификатором ${id} не найден в ${type}.`);
+            // Добавлено логирование для отладки
+            console.log(`Доступные элементы в ${type}:`, items);
+            return type === 'companies' ? 'Неизвестная компания' : 'Неизвестное направление';
+        }
+        return item.name; // Возвращаем имя найденного элемента
+    }
+    async setMemberData  (member) {
         this.member = { ...member };
-        this.addedCompanies = member.companies ? member.companies.map(companyId => ({ id: companyId.id, name: getNameById(companyId, 'companies') })) : [];
-        this.addedDirections = member.directions ? member.directions.map(directionId => ({ id: directionId.id, name: getNameById(directionId, 'directions') })) : [];
+        this.addedCompanies = [];
+        this.addedDirections = [];
         this.addedSkills = member.skills ? member.skills.map(skill => ({ ...skill })) : [];
         this.addedSocials = member.social ? member.social.map(social => ({ ...social })) : [];
         this.memberHobbies = member.hobbies ? [...member.hobbies] : [];
-    };
+        
+        if (member.companies && member.companies.length > 0) {
+            for (const company of member.companies) {
+                const name = await this.getNameById(company.id, 'companies');
+                runInAction(() => {
+                    const isExisting = this.addedCompanies.some(comp => comp.id === company.id);
+                    if (!isExisting && name !== 'Неизвестная компания') {
+                        this.addedCompanies.push({ id: company.id, name });
+                    }
+                });
+            }
+        }
+    
+        if (member.directions && member.directions.length > 0) {
+            for (const direction of member.directions) {
+                const name = await this.getNameById(direction.id, 'directions');
+                runInAction(() => {
+                    const isExisting = this.addedDirections.some(dir => dir.id === direction.id);
+                    if (!isExisting && name !== 'Неизвестное направление') {
+                        this.addedDirections.push({ id: direction.id, name });
+                    }
+                });
+            }
+        }
+        if (member.photo) {
+            const photoUrl = await this.getPhotoUrlById(member.id);
+            runInAction(() => {
+                this.member.photo = photoUrl;
+            });
+        }
+};
     startEditing(member) {
+        this.resetMemberState(); // Сброс состояния перед началом редактирования
         this.editingMember = member;
         this.setMemberData(member);
         // Также обновляем состояние компаний и направлений
@@ -196,6 +234,14 @@ class MembersStore {
     };
     
     //КОМПАНИИ
+    async loadCompanies() {
+        if (this.companies.length === 0) {
+            const companiesData = await firebaseService.fetchData('companies');
+            runInAction(() => {
+                this.companies = companiesData;
+            });
+        }
+    }
     setCompanies = (companies) => {
         this.companies = companies;
     };
@@ -203,8 +249,11 @@ class MembersStore {
         this.company = { ...this.company, [name]: value };
     };
     addCompany = () => {
-        if (this.company.id && this.company.status) {
+        // Проверяем, существует ли уже компания с таким ID в addedCompanies
+        const isExisting = this.addedCompanies.some(comp => comp.id === this.company.id);
+        if (!isExisting && this.company.id && this.company.status) {
             this.addedCompanies.push({ ...this.company });
+            // Сброс после добавления
             this.company = { id: '', name: '', status: '' };
         }
     };
@@ -242,8 +291,16 @@ class MembersStore {
         const companyPath = `companies/${companyId}`;
         await firebaseService.removeData(companyPath);
     };
-
+    
     //НАПРАВЛЕНИЯ
+    async loadDirections() {
+        if (this.directions.length === 0) {
+            const directionsData = await firebaseService.fetchData('directions');
+            runInAction(() => {
+                this.directions = directionsData;
+            });
+        }
+    }
     setDirections = (directions) => {
         this.directions = directions;
     };
@@ -251,8 +308,11 @@ class MembersStore {
         this.direction = { ...this.direction, [name]: value };
     };
     addDirection = () => {
-        if (this.direction.id && this.direction.status) {
+        // Проверяем, существует ли уже направление с таким ID в addedDirections
+        const isExisting = this.addedDirections.some(dir => dir.id === this.direction.id);
+        if (!isExisting && this.direction.id && this.direction.status) {
             this.addedDirections.push({ ...this.direction });
+            // Сброс после добавления
             this.direction = { id: '', name: '', status: '' };
         }
     };
@@ -372,8 +432,22 @@ class MembersStore {
 
     //ФОТО
     setPhoto = (photoUrl) => {
+        console.log(photoUrl);
         this.member = { ...this.member, photo: photoUrl };
     };
+    async getPhotoUrlById(memberId) {
+        try {
+            const memberData = await firebaseService.fetchData(`members/${memberId}`);
+            if (memberData) {
+                return memberData[6];
+            } else {
+                console.log('Фотография не найдена, возвращается URL изображения по умолчанию.');
+                return 'https://firebasestorage.googleapis.com/v0/b/gonetwork-community-1add4.appspot.com/o/member.png?alt=media&token=c37df151-abbd-4bbf-9880-accd49790801';
+            }
+        } catch (error) {
+            console.error('Ошибка при получении URL фотографии:', error);
+            }
+    }
 }
 
 export const membersStore = new MembersStore();
