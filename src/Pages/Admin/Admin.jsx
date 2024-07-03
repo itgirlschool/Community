@@ -6,6 +6,7 @@ import MemberForm from '../../Components/MemberForm/MemberForm.jsx';
 import MemberList from '../../Components/MemberList/MemberList.jsx';
 import ListManager from '../../Components/ListManager/ListManager.jsx';
 import "./Admin.scss";
+import AllPhotos from '../../Components/AllPhotos/AllPhotos.jsx';
 
 const Admin = observer(() => {
     const data = useFirebaseData();
@@ -15,7 +16,7 @@ const Admin = observer(() => {
             membersStore.setCompanies(data.companies);
             membersStore.setDirections(data.directions);
             membersStore.setHobbies(data.hobbies);
-    }, [data]); 
+    }, [membersStore]); 
 
     const handleCompanyListChange = (event) => {
         membersStore.setCompany('name', event.target.value)
@@ -77,6 +78,7 @@ const Admin = observer(() => {
                 addButtonClick={() => membersStore.addHobbyToDatabase(membersStore.hobby)}
                 isInputFilled={membersStore.isHobbyInputFilled}
             />
+            <AllPhotos />
         </main>
     );
 });

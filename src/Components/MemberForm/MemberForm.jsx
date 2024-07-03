@@ -1,6 +1,7 @@
 import { observer } from 'mobx-react';
 import FormInput from '../FormInput/FormInput.jsx';
 import AddedItem from '../AddedItem/AddedItem.jsx';
+import Photo from '../Photo/Photo.jsx';
 
 const MemberForm = observer(({ membersStore, data }) => {
     // Обработчики и логика формы
@@ -77,9 +78,8 @@ const MemberForm = observer(({ membersStore, data }) => {
         membersStore.addSocial();
     };
 
-    const handlePhotoChange = (event) => {
-        const { value } = event.target;
-        membersStore.setPhoto(value);
+    const handlePhotoChange = (photoUrl) => {
+        membersStore.setPhoto(photoUrl);
     };
 
     // Функция для отмены редактирования
@@ -266,13 +266,9 @@ const MemberForm = observer(({ membersStore, data }) => {
                 onRemove={() => membersStore.removeSocial(index)}
             />
         ))}
-        <FormInput
-            label="Фото:"
-            type="text"
-            name="photo"
-            placeholder="Введите URL фотографии"
-            value={membersStore.member.photo}
-            onChange={handlePhotoChange}
+        <Photo
+            handlePhotoChange={(event) => handlePhotoChange(event.target.value)}
+            currentPhotoUrl={membersStore.member.photo}
         />
         <button
             type="submit"
