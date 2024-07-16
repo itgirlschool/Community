@@ -7,6 +7,7 @@ class MembersStore {
     companies = [];
     directions = [];
     hobbies = [];
+    lastHobbyId = 0;
     member = {
         companies: [],
         directions: [],
@@ -387,8 +388,17 @@ class MembersStore {
             this.hobbies = hobbiesData.map(hobby => hobby.val());
         });
     };
+    // Метод для получения последнего ID хобби
+    fetchLastHobbyId = async () => {
+        const hobbiesData = await firebaseService.fetchData('hobbies');
+        const lastId = hobbiesData.length > 0 ? Math.max(...hobbiesData.map(hobby => Number(hobby.id))) : 0;
+        this.lastHobbyId = lastId; // Сохраняем последний ID в свойство класса
+    };
+
+    // Метод для добавления нового хобби в базу данных
     addHobbyToDatabase = async (hobbyData) => {
-        const newHobbyId = this.hobbies.length > 0 ? Math.max(...this.hobbies.map(h => Number(h.id))) + 1 : 1;
+        await this.fetchLastHobbyId(); // Обновляем lastHobbyId перед добавлением нового хобби
+        const newHobbyId = this.lastHobbyId + 1;
         const newHobby = {
             id: newHobbyId,
             name: hobbyData.name
@@ -397,9 +407,8 @@ class MembersStore {
         await firebaseService.addData(path, newHobby);
         runInAction(() => {
             this.hobbies.push(newHobby);
-            this.hobby = { id: '', name: '' };
+            this.hobby = { id: '', name: '' }; // Сброс текущего состояния хобби
         });
-        
         console.log(`Хобби добавлено с ID: ${newHobbyId}`);
     };
     setHobbyInputFilled = (isFilled) => {
