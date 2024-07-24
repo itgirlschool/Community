@@ -12,25 +12,31 @@ const useFirebaseData = () => {
 
     useEffect(() => {
         async function fetchData() {
-        const db = getDatabase(app);
-        const dbRef = ref(db);
-        try {
-            const membersSnapshot = await get(child(dbRef, 'members'));
-            const companiesSnapshot = await get(child(dbRef, 'companies'));
-            const directionsSnapshot = await get(child(dbRef, 'directions'));
-            const hobbiesSnapshot = await get(child(dbRef, 'hobbies'));
+            const db = getDatabase(app);
+            const dbRef = ref(db);
+            try {
+                const snapshotToArray = (snapshot) => {
+                    return snapshot.exists() ? Object.values(snapshot.val()) : [];
+                };
 
-            const object = {
-            members: membersSnapshot.exists() ? membersSnapshot.val() : [],
-            companies: companiesSnapshot.exists() ? companiesSnapshot.val() : [],
-            directions: directionsSnapshot.exists() ? directionsSnapshot.val() : [],
-            hobbies: hobbiesSnapshot.exists() ? hobbiesSnapshot.val() : []
-            };
+                const membersSnapshot = await get(child(dbRef, 'members'));
+                const companiesSnapshot = await get(child(dbRef, 'companies'));
+                const directionsSnapshot = await get(child(dbRef, 'directions'));
+                const hobbiesSnapshot = await get(child(dbRef, 'hobbies'));
 
-            setData(object);
-        } catch (error) {
-            console.error(error);
-        }
+                if (!membersSnapshot.exists() || !companiesSnapshot.exists() || !directionsSnapshot.exists() || !hobbiesSnapshot.exists()) {
+                    throw new Error('Данные отсутствуют');
+                }
+
+                setData({
+                    members: snapshotToArray(membersSnapshot),
+                    companies: snapshotToArray(companiesSnapshot),
+                    directions: snapshotToArray(directionsSnapshot),
+                    hobbies: snapshotToArray(hobbiesSnapshot)
+                });
+            } catch (error) {
+                console.error(error);
+            }
         }
 
         fetchData();

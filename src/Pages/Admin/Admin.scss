@@ -1,0 +1,121 @@
+$form-padding: 20px;
+$form-bg-color: #f3f3f3;
+$form-border-color: #d1d1d1;
+$button-bg-color: #5cb85c;
+$button-text-color: #fff;
+$label-color: #555;
+
+h2 {
+    text-align: center;
+    font-family: Montserrat;
+    font-size: 1.25rem;
+    font-weight: 500;
+    line-height: 24px;
+}
+
+form {
+background-color: $form-bg-color;
+border: 1px solid $form-border-color;
+padding: $form-padding;
+border-radius: 5px;
+width: 100%;
+max-width: 500px;
+margin: 0 auto;
+
+    label {
+        color: $label-color;
+        display: block;
+        margin: 10px 0;
+    }
+
+        input[type="text"],
+        select {
+        width: 90%;
+        padding: 8px;
+        margin-top: 5px;
+        border: 1px solid $form-border-color;
+        border-radius: 4px;
+        }
+        input[type="file"] {
+        padding: 8px;
+        margin-top: 5px;
+        }
+        input[type="checkbox"] {
+            margin-right: 5px;
+        }
+
+    button[type="submit"] {
+        background-color: $button-bg-color;
+        color: $button-text-color;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 4px;
+        margin-top: 20px;
+        margin-right: 20px;
+        cursor: pointer;
+
+        &:hover {
+        background-color: darken($button-bg-color, 10%);
+        }
+        &:disabled {
+            background-color: $label-color;
+            cursor: none;
+        }
+}
+}
+
+.member-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+.member {
+    margin: 5px;
+    padding: 5px;
+    border-bottom: 1px solid #eee;
+}
+.member:last-child {
+    border-bottom: none;
+}
+.member span {
+    display: block;
+    font-size: 16px;
+    color: #333;
+}
+.member .firstName, .lastName {
+    font-weight: bold;
+}
+.member .info {
+    font-size: 14px;
+    color: #666;
+}
+
+.buttons-container {
+    display: flex;
+    gap: 10px;
+    margin: 10px 0;
+}
+
+.add-button {
+    display: block;
+    background-color: $button-bg-color;
+    color: $button-text-color;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    margin-top: 20px;
+    cursor: pointer;
+
+    &:hover {
+        background-color: darken($button-bg-color, 10%);
+    }
+            &:disabled {
+            background-color: $label-color;
+            cursor: none;
+        }
+}
